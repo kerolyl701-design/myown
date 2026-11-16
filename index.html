@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1d1e1b">
+  <title>Письмо для тебя</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --paper: #1d1e1b;
+      --card: #252622;
+      --ink: #e1ded5;
+      --muted: #aaa89e;
+      --olive: #9aa68b;
+      --line: #41423b;
+      --field: #20211e;
+      --button-ink: #20221d;
+      --hover: #30312c;
+      --letter-size: 20px;
+      --serif: Georgia, "Times New Roman", serif;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+    :root.light-theme {
+      color-scheme: light;
+      --paper: #f5f1e9;
+      --card: #fffdf8;
+      --ink: #292a25;
+      --muted: #77786e;
+      --olive: #65735d;
+      --line: #e8e2d7;
+      --field: #fffefa;
+      --button-ink: #fff;
+      --hover: #f0f1ec;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      padding: 48px 20px 64px;
+      background: var(--paper);
+      font-size: 17px;
+    }
+
+    .page { width: min(100%, 820px); margin: 0 auto; }
+
+    .eyebrow {
+      margin: 0 0 16px;
+      color: var(--olive);
+      font-size: .73rem;
+      font-weight: 700;
+      letter-spacing: .19em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 8vw, 4.7rem);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .intro {
+      max-width: 520px;
+      margin: 20px auto 34px;
+      color: var(--muted);
+      font-family: var(--serif);
+      font-size: 1.12rem;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    .letter {
+      padding: clamp(22px, 5vw, 44px);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: var(--card);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, .14);
+    }
+
+    .comfort-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .comfort-controls label {
+      display: inline;
+      margin: 0 8px 0 0;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: .9rem;
+    }
+
+    .comfort-controls select {
+      min-height: 42px;
+      padding: 0 30px 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--field);
+      color: var(--ink);
+      font: inherit;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 12px;
+      font-family: var(--serif);
+      font-size: 1.28rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--field);
+      color: var(--ink);
+      font: inherit;
+      outline: none;
+      transition: border-color .18s;
+    }
+
+    input { padding: 13px 15px; }
+
+    textarea {
+      display: block;
+      width: min(100%, 70ch);
+      min-height: 58vh;
+      margin-top: 18px;
+      padding: 20px;
+      font-family: var(--serif);
+      font-size: var(--letter-size);
+      line-height: 1.9;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--olive);
+      box-shadow: 0 0 0 3px rgba(154, 166, 139, .16);
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px 18px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: .84rem;
+    }
+
+    #save-status { color: var(--olive); }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    button {
+      min-height: 46px;
+      padding: 0 20px;
+      border: 1px solid var(--olive);
+      border-radius: 3px;
+      background: var(--olive);
+      color: var(--button-ink);
+      cursor: pointer;
+      font: inherit;
+      font-size: .93rem;
+      transition: background .18s, transform .18s;
+    }
+
+    button:hover { filter: brightness(1.08); }
+    button:active { transform: translateY(1px); }
+    button.secondary { background: transparent; color: var(--olive); }
+    button.secondary:hover { background: var(--hover); }
+
+    .privacy {
+      max-width: 560px;
+      margin: 22px auto 0;
+      color: var(--muted);
+      font-size: .82rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .reading {
+      display: none;
+      width: min(100%, 68ch);
+      min-height: 50vh;
+      margin: 0 auto;
+      padding: 8px 0 20px;
+      font-family: var(--serif);
+      font-size: var(--letter-size);
+      line-height: 1.95;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+
+    .reading-title {
+      margin: 0 0 28px;
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      font-weight: 400;
+    }
+
+    body.is-reading .editor { display: none; }
+    body.is-reading .reading { display: block; }
+    body.is-reading #import-button { display: none; }
+
+    @media (max-width: 520px) {
+      body { padding: 34px 14px 42px; }
+      .intro { margin-bottom: 25px; }
+      textarea { min-height: 55vh; padding: 15px; }
+      .actions button { flex: 1 1 42%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">самое важное — от сердца</p>
+    <h1>Письмо для тебя</h1>
+    <p class="intro">Здесь можно спокойно собрать всё, что хочется сказать. Не торопись — у важных слов может быть столько места, сколько им нужно.</p>
+
+    <section class="letter" aria-label="Твоё письмо">
+      <div class="comfort-controls" aria-label="Настройки отображения">
+        <button id="theme-button" class="secondary" type="button" aria-pressed="false">Включить светлую тему</button>
+        <div>
+          <label for="font-size">Размер текста</label>
+          <select id="font-size">
+            <option value="18px">Компактный</option>
+            <option value="20px" selected>Обычный</option>
+            <option value="22px">Крупный</option>
+            <option value="25px">Очень крупный</option>
+            <option value="28px">Максимальный</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="editor">
+        <label for="recipient">Кому адресовано письмо</label>
+        <input id="recipient" type="text" placeholder="Например, любимой" autocomplete="off">
+        <label for="message" style="margin-top: 24px">Твоё письмо</label>
+        <textarea id="message" placeholder="Начни с того, что действительно чувствуешь… Здесь нет ограничения по длине."></textarea>
+        <div class="meta" aria-live="polite">
+          <span id="word-count">0 слов · 0 символов</span>
+          <span id="save-status">Сохранено в этом браузере</span>
+        </div>
+      </div>
+
+      <article class="reading" aria-live="polite">
+        <h2 class="reading-title" id="reading-title">Для тебя</h2>
+        <div id="reading-message"></div>
+      </article>
+
+      <div class="actions">
+        <button id="read-button" type="button">Прочитать письмо</button>
+        <button id="import-button" class="secondary" type="button">Загрузить готовый текст</button>
+        <button id="download-button" class="secondary" type="button">Скачать .txt</button>
+        <button id="edit-button" class="secondary" type="button" hidden>Вернуться к тексту</button>
+      </div>
+      <input id="import-file" type="file" accept=".txt,text/plain" hidden>
+    </section>
+
+    <p class="privacy">Черновик сохраняется только в локальном хранилище этого браузера и не отправляется в интернет. Чтобы вставить готовый текст, нажми «Загрузить готовый текст» и выбери файл .txt. Скачай текст, если хочешь сохранить отдельную копию.</p>
+  </main>
+
+  <script>
+    (() => {
+      const message = document.querySelector("#message");
+      const recipient = document.querySelector("#recipient");
+      const wordCount = document.querySelector("#word-count");
+      const saveStatus = document.querySelector("#save-status");
+      const readButton = document.querySelector("#read-button");
+      const editButton = document.querySelector("#edit-button");
+      const readingTitle = document.querySelector("#reading-title");
+      const readingMessage = document.querySelector("#reading-message");
+      const themeButton = document.querySelector("#theme-button");
+      const fontSize = document.querySelector("#font-size");
+      const importButton = document.querySelector("#import-button");
+      const importFile = document.querySelector("#import-file");
+      const storageKey = "letter-for-you-v1";
+      let saveTimer;
+
+      function setTheme(isLight) {
+        document.documentElement.classList.toggle("light-theme", isLight);
+        themeButton.setAttribute("aria-pressed", String(isLight));
+        themeButton.textContent = isLight ? "Включить тёмную тему" : "Включить светлую тему";
+        document.querySelector('meta[name="theme-color"]').content = isLight ? "#f5f1e9" : "#1d1e1b";
+      }
+
+      try {
+        setTheme(localStorage.getItem("letter-theme-v1") === "light");
+        const savedFontSize = localStorage.getItem("letter-font-size-v1");
+        if (savedFontSize && Array.from(fontSize.options).some(option => option.value === savedFontSize)) {
+          fontSize.value = savedFontSize;
+          document.documentElement.style.setProperty("--letter-size", savedFontSize);
+        }
+      } catch (error) {
+        setTheme(false);
+        console.error("Не удалось загрузить настройки отображения:", error);
+      }
+
+      themeButton.addEventListener("click", () => {
+        const isLight = !document.documentElement.classList.contains("light-theme");
+        setTheme(isLight);
+        try {
+          localStorage.setItem("letter-theme-v1", isLight ? "light" : "dark");
+        } catch (error) {
+          console.error("Не удалось сохранить тему оформления:", error);
+        }
+      });
+
+      fontSize.addEventListener("change", () => {
+        document.documentElement.style.setProperty("--letter-size", fontSize.value);
+        try {
+          localStorage.setItem("letter-font-size-v1", fontSize.value);
+        } catch (error) {
+          console.error("Не удалось сохранить размер текста:", error);
+        }
+      });
+
+      function updateCount() {
+        const text = message.value.trim();
+        const words = text ? text.split(/\s+/u).length : 0;
+        wordCount.textContent = `${words.toLocaleString("ru-RU")} слов · ${message.value.length.toLocaleString("ru-RU")} символов`;
+      }
+
+      function save() {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify({
+            recipient: recipient.value,
+            message: message.value
+          }));
+          saveStatus.textContent = "Сохранено в этом браузере";
+        } catch (error) {
+          saveStatus.textContent = "Не удалось сохранить — скачай копию .txt";
+          console.error("Не удалось сохранить письмо в браузере:", error);
+        }
+      }
+
+      function scheduleSave() {
+        saveStatus.textContent = "Сохраняю…";
+        window.clearTimeout(saveTimer);
+        saveTimer = window.setTimeout(save, 250);
+      }
+
+      try {
+        const saved = localStorage.getItem(storageKey);
+        if (saved) {
+          const draft = JSON.parse(saved);
+          if (typeof draft.recipient === "string") recipient.value = draft.recipient;
+          if (typeof draft.message === "string") message.value = draft.message;
+        }
+      } catch (error) {
+        saveStatus.textContent = "Не удалось прочитать черновик из браузера";
+        console.error("Не удалось загрузить сохранённое письмо:", error);
+      }
+      updateCount();
+
+      message.addEventListener("input", () => {
+        updateCount();
+        scheduleSave();
+      });
+      recipient.addEventListener("input", scheduleSave);
+
+      importButton.addEventListener("click", () => importFile.click());
+      importFile.addEventListener("change", async () => {
+        const file = importFile.files && importFile.files[0];
+        if (!file) return;
+        if (message.value && !window.confirm("Заменить текущий текст письма содержимым файла?")) {
+          importFile.value = "";
+          return;
+        }
+        try {
+          message.value = await file.text();
+          message.dispatchEvent(new Event("input", { bubbles: true }));
+          saveStatus.textContent = `Загружен файл: ${file.name}`;
+        } catch (error) {
+          saveStatus.textContent = "Не удалось прочитать файл";
+          console.error("Не удалось загрузить текст письма:", error);
+        }
+        importFile.value = "";
+      });
+
+      readButton.addEventListener("click", () => {
+        readingTitle.textContent = recipient.value.trim() ? `Для ${recipient.value.trim()}` : "Для тебя";
+        readingMessage.textContent = message.value || "Пока здесь нет текста письма.";
+        document.body.classList.add("is-reading");
+        editButton.hidden = false;
+        readButton.hidden = true;
+      });
+
+      editButton.addEventListener("click", () => {
+        document.body.classList.remove("is-reading");
+        editButton.hidden = true;
+        readButton.hidden = false;
+      });
+
+      document.querySelector("#download-button").addEventListener("click", () => {
+        const title = recipient.value.trim() ? `Для ${recipient.value.trim()}` : "Письмо для тебя";
+        const blob = new Blob([`${title}\n\n${message.value}`], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "pismo-dlya-tebya.txt";
+        link.click();
+        URL.revokeObjectURL(url);
+      });
+    })();
+  </script>
+</body>
+</html>
